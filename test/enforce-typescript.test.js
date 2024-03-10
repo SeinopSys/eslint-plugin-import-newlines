@@ -213,6 +213,18 @@ import App from './App'
 }`,
       options: [],
     },
+    {
+      code: "import type { \na,\n\nb,\n\n\nc,\n\n\nd,\n\n\n\ne\n} from './test';",
+      options: [{
+        allowBlankLines: true,
+      }],
+    },
+    {
+      code: "import type { a,\n\n\nb } from './test';",
+      options: [{
+        allowBlankLines: true,
+      }],
+    },
   ],
 
   invalid: [
