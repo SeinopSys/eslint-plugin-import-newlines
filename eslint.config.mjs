@@ -5,11 +5,8 @@ import js from '@eslint/js';
 
 export default defineConfig([
   js.configs.recommended,
+  eslintPlugin.configs.recommended,
   {
-    plugins: {
-      'eslint-plugin': eslintPlugin,
-    },
-
     languageOptions: {
       globals: {
         ...globals.commonjs,
