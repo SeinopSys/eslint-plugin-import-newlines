@@ -1,62 +1,56 @@
-/* eslint-env mocha */
 const { RuleTester } = require('eslint');
 const rule = require('../lib/enforce');
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-    sourceType: 'module',
-  },
-});
+const ruleTester = new RuleTester();
 
 const repeatString = (str, times) => [...new Array(times + 1)].join(str);
 
 ruleTester.run('enforce', rule, {
   valid: [
     {
-      code: "import { a, b, c, d } from './test'",
+      code: 'import { a, b, c, d } from \'./test\'',
     },
     {
-      code: "import { a, b, c, d } from './test'",
+      code: 'import { a, b, c, d } from \'./test\'',
       options: [6],
     },
     {
-      code: "import { a, b, c, d } from './test'",
+      code: 'import { a, b, c, d } from \'./test\'',
       options: [{
         items: 6,
       }],
     },
     {
-      code: "import {\na,\nb,\nc\n} from './test'",
+      code: 'import {\na,\nb,\nc\n} from \'./test\'',
       options: [2],
     },
     {
-      code: "import {\na,\nb,\nc\n} from './test'",
+      code: 'import {\na,\nb,\nc\n} from \'./test\'',
       options: [{
         items: 2,
       }],
     },
     {
-      code: "import test from './test'",
+      code: 'import test from \'./test\'',
     },
     {
-      code: "import test, { a } from './test'",
+      code: 'import test, { a } from \'./test\'',
     },
     {
-      code: "import * as test from './test'",
+      code: 'import * as test from \'./test\'',
     },
     {
-      code: "import a, * as b from './test'",
+      code: 'import a, * as b from \'./test\'',
     },
     {
-      code: "import './test.css'",
+      code: 'import \'./test.css\'',
     },
     {
-      code: "import { a, b, c, d } from './test'",
+      code: 'import { a, b, c, d } from \'./test\'',
       options: [4, 50],
     },
     {
-      code: "import { a, b, c, d } from './test'",
+      code: 'import { a, b, c, d } from \'./test\'',
       options: [{
         items: 4,
         'max-len': 50,
@@ -85,33 +79,33 @@ ruleTester.run('enforce', rule, {
       }],
     },
     {
-      code: "import a from 'a'",
+      code: 'import a from \'a\'',
       options: [10, 17],
     },
     {
-      code: "import a from 'a'",
+      code: 'import a from \'a\'',
       options: [{
         items: 10,
         'max-len': 17,
       }],
     },
     {
-      code: "import { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from './test'",
+      code: 'import { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from \'./test\'',
       options: [20, 83],
     },
     {
-      code: "import { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from './test'",
+      code: 'import { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from \'./test\'',
       options: [{
         items: 20,
         'max-len': 83,
       }],
     },
     {
-      code: "import test, { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from './test'",
+      code: 'import test, { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from \'./test\'',
       options: [20, 89],
     },
     {
-      code: "import test, { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from './test'",
+      code: 'import test, { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t } from \'./test\'',
       options: [{
         items: 20,
         'max-len': 89,
@@ -164,7 +158,7 @@ ruleTester.run('enforce', rule, {
       }],
     },
     {
-      code: "import {\na,\nb\n} from './test'",
+      code: 'import {\na,\nb\n} from \'./test\'',
       options: [{
         items: 4,
         semi: false,
@@ -172,7 +166,7 @@ ruleTester.run('enforce', rule, {
       }],
     },
     {
-      code: "import test, {\na as apple,\nb as banana\n} from './test'",
+      code: 'import test, {\na as apple,\nb as banana\n} from \'./test\'',
       options: [{
         items: 2,
         semi: false,
@@ -180,14 +174,14 @@ ruleTester.run('enforce', rule, {
       }],
     },
     {
-      code: "import test, {\na,\nb\n} from './test'",
+      code: 'import test, {\na,\nb\n} from \'./test\'',
       options: [{
         semi: false,
         forceSingleLine: false,
       }],
     },
     {
-      code: "import test, {\na,\nb\n} from './test'",
+      code: 'import test, {\na,\nb\n} from \'./test\'',
       options: [{
         semi: true,
         forceSingleLine: false,
@@ -251,13 +245,13 @@ import App from './App'
       }],
     },
     {
-      code: "import { \na,\n\nb,\n\n\nc,\n\n\nd,\n\n\n\ne\n} from './test';",
+      code: 'import { \na,\n\nb,\n\n\nc,\n\n\nd,\n\n\n\ne\n} from \'./test\';',
       options: [{
         allowBlankLines: true,
       }],
     },
     {
-      code: "import { a,\n\n\nb } from './test';",
+      code: 'import { a,\n\n\nb } from \'./test\';',
       options: [{
         allowBlankLines: true,
       }],
@@ -266,39 +260,39 @@ import App from './App'
 
   invalid: [
     {
-      code: "import {\na,\nb\n} from './test'",
-      output: "import { a, b } from './test'",
+      code: 'import {\na,\nb\n} from \'./test\'',
+      output: 'import { a, b } from \'./test\'',
       options: [4],
       errors: [{ messageId: 'mustNotSplit' }],
     },
     {
-      code: "import test, {\na as apple,\nb as banana\n} from './test'",
-      output: "import test, { a as apple, b as banana } from './test'",
+      code: 'import test, {\na as apple,\nb as banana\n} from \'./test\'',
+      output: 'import test, { a as apple, b as banana } from \'./test\'',
       options: [2],
       errors: [{ messageId: 'mustNotSplit' }],
     },
     {
-      code: "import test, {\na,\nb\n} from './test'",
-      output: "import test, { a, b } from './test'",
+      code: 'import test, {\na,\nb\n} from \'./test\'',
+      output: 'import test, { a, b } from \'./test\'',
       errors: [{ messageId: 'mustNotSplit' }],
     },
     {
-      code: "import test, {\na,\nb\n} from './test'",
-      output: "import test, { a, b } from './test';",
+      code: 'import test, {\na,\nb\n} from \'./test\'',
+      output: 'import test, { a, b } from \'./test\';',
       options: [{
         semi: true,
       }],
       errors: [{ messageId: 'mustNotSplit' }],
     },
     {
-      code: "import { a, b, c, d } from './test'",
-      output: "import {\na,\nb,\nc,\nd\n} from './test'",
+      code: 'import { a, b, c, d } from \'./test\'',
+      output: 'import {\na,\nb,\nc,\nd\n} from \'./test\'',
       options: [1],
       errors: [{ messageId: 'mustSplitMany' }],
     },
     {
-      code: "import { a, b, c, d } from './test'",
-      output: "import {\na,\nb,\nc,\nd\n} from './test';",
+      code: 'import { a, b, c, d } from \'./test\'',
+      output: 'import {\na,\nb,\nc,\nd\n} from \'./test\';',
       options: [{
         items: 1,
         semi: true,
@@ -306,50 +300,50 @@ import App from './App'
       errors: [{ messageId: 'mustSplitMany' }],
     },
     {
-      code: "import test, { a, b } from './test'",
-      output: "import test, {\na,\nb\n} from './test'",
+      code: 'import test, { a, b } from \'./test\'',
+      output: 'import test, {\na,\nb\n} from \'./test\'',
       options: [1],
       errors: [{ messageId: 'mustSplitMany' }],
     },
     {
-      code: "import test, { a, b as banana } from './test'",
-      output: "import test, {\na,\nb as banana\n} from './test'",
+      code: 'import test, { a, b as banana } from \'./test\'',
+      output: 'import test, {\na,\nb as banana\n} from \'./test\'',
       options: [1],
       errors: [{ messageId: 'mustSplitMany' }],
     },
     {
-      code: "import { \na,\n\nb,\n\n\nc,\n\n\nd,\n\n\n\ne\n} from './test'",
-      output: "import {\na,\nb,\nc,\nd,\ne\n} from './test'",
+      code: 'import { \na,\n\nb,\n\n\nc,\n\n\nd,\n\n\n\ne\n} from \'./test\'',
+      output: 'import {\na,\nb,\nc,\nd,\ne\n} from \'./test\'',
       options: [4],
       errors: [{ messageId: 'noBlankBetween' }],
     },
     {
-      code: "import { a,\n\n\nb } from './test'",
-      output: "import {\na,\nb\n} from './test'",
+      code: 'import { a,\n\n\nb } from \'./test\'',
+      output: 'import {\na,\nb\n} from \'./test\'',
       options: [1],
       errors: [{ messageId: 'noBlankBetween' }],
     },
     {
-      code: "import {\n\na,\nb\n\n\n} from './test'",
-      output: "import {\na,\nb\n} from './test'",
+      code: 'import {\n\na,\nb\n\n\n} from \'./test\'',
+      output: 'import {\na,\nb\n} from \'./test\'',
       options: [1],
       errors: [{ messageId: 'limitLineCount' }],
     },
     {
-      code: "import {\na, b, c\n} from './test'",
-      output: "import {\na,\nb,\nc\n} from './test'",
+      code: 'import {\na, b, c\n} from \'./test\'',
+      output: 'import {\na,\nb,\nc\n} from \'./test\'',
       options: [1],
       errors: [{ messageId: 'limitLineCount' }],
     },
     {
-      code: "import { getPublicStaticVoidFinalObjectClassExtensionFactory } from './test'",
-      output: "import {\ngetPublicStaticVoidFinalObjectClassExtensionFactory\n} from './test'",
+      code: 'import { getPublicStaticVoidFinalObjectClassExtensionFactory } from \'./test\'',
+      output: 'import {\ngetPublicStaticVoidFinalObjectClassExtensionFactory\n} from \'./test\'',
       options: [4, 50],
       errors: [{ messageId: 'mustSplitLong' }],
     },
     {
-      code: "import { aaaaaaaaaa, bbbbbbbbbb, cccccccccc, dddddddddd } from './test'",
-      output: "import {\naaaaaaaaaa,\nbbbbbbbbbb,\ncccccccccc,\ndddddddddd\n} from './test'",
+      code: 'import { aaaaaaaaaa, bbbbbbbbbb, cccccccccc, dddddddddd } from \'./test\'',
+      output: 'import {\naaaaaaaaaa,\nbbbbbbbbbb,\ncccccccccc,\ndddddddddd\n} from \'./test\'',
       options: [4, 50],
       errors: [{ messageId: 'mustSplitLong' }],
     },
@@ -374,14 +368,14 @@ import App from './App'
       errors: [{ messageId: 'mustSplitLong' }],
     },
     {
-      code: "import { aaa } from './test'",
-      output: "import {\naaa\n} from './test'",
+      code: 'import { aaa } from \'./test\'',
+      output: 'import {\naaa\n} from \'./test\'',
       options: [0, 140],
       errors: [{ messageId: 'mustSplitMany' }],
     },
     {
-      code: "import { bbb } from './test';",
-      output: "import {\nbbb\n} from './test';",
+      code: 'import { bbb } from \'./test\';',
+      output: 'import {\nbbb\n} from \'./test\';',
       options: [{
         items: 0,
         'max-len': 140,
