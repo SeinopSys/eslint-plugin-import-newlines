@@ -27,6 +27,39 @@ installing it.
 
 ## Usage
 
+### Flat config (ESLint 9+)
+
+Use the bundled `recommended` preset, which registers the plugin and enables the rule:
+
+```js
+// eslint.config.mjs
+import importNewlines from 'eslint-plugin-import-newlines';
+
+export default [
+  importNewlines.configs.recommended,
+];
+```
+
+Or register the plugin yourself to configure the rule:
+
+```js
+// eslint.config.mjs
+import importNewlines from 'eslint-plugin-import-newlines';
+
+export default [
+  {
+    plugins: {
+      'import-newlines': importNewlines,
+    },
+    rules: {
+      'import-newlines/enforce': ['error', { items: 2, 'max-len': 100 }],
+    },
+  },
+];
+```
+
+### Legacy `.eslintrc`
+
 Add `import-newlines` to the plugins section of your `.eslintrc` configuration file.
 
 ```json
@@ -192,6 +225,27 @@ is checked by comparing the end and start lines of adjacent import specifiers an
 is greater than one, the error will be raised. If you want to allow blank lines between imported
 items, set this option to `true`. Note that applying any auto-fixes from this rule will cause your
 new lines to be lost.
+
+#### `newlineAboveImport` [integer] (default: not set)
+
+When set, the rule makes sure there are exactly this many blank lines above the **first** import of
+the file, and offers an automatic fix. `0` means there must be none and any number `>= 1` means that
+many blank lines. When not set, nothing above the first import is checked. Only available in the
+object-based configuration.
+
+If the import is the first thing in the file, the blank lines are counted from the start of the
+file. Otherwise they are counted from the end of whatever precedes the import (a comment, a
+directive, a statement), so `1` gives a header comment exactly one empty line before the import and
+`0` places the import on the line directly after it. Other imports are never touched, and an import
+that shares its line with preceding code is ignored. Indentation and the file's line endings are
+preserved by the fix.
+
+### Comments between imported items
+
+A comment on its own line between the imported items (for example `// here is a comment`) is not
+counted as a blank line or as an extra line. Note that applying an auto-fix that rewrites the
+import (for example splitting it) will still drop such comments, so the rule never forces an
+import with comments between its items onto a single line.
 
 ### Testing
 

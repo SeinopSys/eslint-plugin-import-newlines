@@ -11,6 +11,19 @@ const repeatString = (str, times) => [...new Array(times + 1)].join(str);
 ruleTester.run('enforce', rule, {
   valid: [
     {
+      code: '\nimport type { a } from \'./a\';',
+      options: [{ newlineAboveImport: 1 }],
+    },
+    {
+      code: 'import type { a } from \'./a\';',
+      options: [{ newlineAboveImport: 0 }],
+    },
+    {
+      // The require-style import is not an ImportDeclaration, the type import is the first one
+      code: 'import a = require(\'./a\');\n\nimport type { b } from \'./b\';',
+      options: [{ newlineAboveImport: 1 }],
+    },
+    {
       code: 'import type { a, b, c, d } from \'./test\'',
     },
     {
@@ -224,6 +237,18 @@ import App from './App'
   ],
 
   invalid: [
+    {
+      code: 'import type { a } from \'./a\';',
+      output: '\nimport type { a } from \'./a\';',
+      options: [{ newlineAboveImport: 1 }],
+      errors: [{ messageId: 'newlineAboveImport' }],
+    },
+    {
+      code: '\n\nimport type { a } from \'./a\';',
+      output: 'import type { a } from \'./a\';',
+      options: [{ newlineAboveImport: 0 }],
+      errors: [{ messageId: 'newlineAboveImport' }],
+    },
     {
       code: 'import type {\na,\nb\n} from \'./test\'',
       output: 'import type { a, b } from \'./test\'',

@@ -1,7 +1,7 @@
 // Test cases shared between the ESLint and Oxlint rule testers.
 const repeatString = (str, times) => [...new Array(times + 1)].join(str);
 
-module.exports = {
+const base = {
   valid: [
     {
       code: 'import { a, b, c, d } from \'./test\'',
@@ -440,4 +440,14 @@ import { a, b, c } from './file';`,
       errors: [{ messageId: 'mustNotSplit' }],
     },
   ],
+};
+
+const extras = [
+  require('./comments-between-specifiers'),
+  require('./newline-above-import'),
+];
+
+module.exports = {
+  valid: [...base.valid, ...extras.flatMap((c) => c.valid)],
+  invalid: [...base.invalid, ...extras.flatMap((c) => c.invalid)],
 };
