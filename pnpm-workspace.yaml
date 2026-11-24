@@ -1,2 +1,6 @@
 # Only install package versions that have been published for at least 2 weeks (in minutes)
 minimumReleaseAge: 20160
+
+# Transitive minimatch 7-10 has a DoS advisory fixed in 11.0.1
+overrides:
+  "minimatch@>=7 <11.0.1": ^11.0.1
