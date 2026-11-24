@@ -39,6 +39,8 @@ maintainer approves it with 2FA.
    npm stage list
    npm stage approve <stage-id>
    ```
+   Right after staging, approval can fail with `409 Conflict ... automated review hasn't finished`.
+   That is not an error with the package: wait a few minutes and run the approve command again.
 6. Publish the draft GitHub Release (GitHub UI or `gh release edit v2.0.2 --draft=false`).
 
 Notes:
