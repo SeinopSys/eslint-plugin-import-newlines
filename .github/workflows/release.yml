@@ -61,11 +61,11 @@ jobs:
       # Provenance is attached automatically when publishing via trusted publishing.
       - run: npm stage publish
 
-      # Releases are immutable once published, so this only runs after staging succeeded.
-      # The tarball attached is the same package that was staged.
+      # Created as a draft because published releases are immutable. Publish it from the GitHub UI
+      # (or `gh release edit <tag> --draft=false`) once the staged package has been approved on npm.
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           tarball="$(npm pack --silent --ignore-scripts | tail -1)"
-          gh release create "$GITHUB_REF_NAME" "$tarball" --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
+          gh release create "$GITHUB_REF_NAME" "$tarball" --draft --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
