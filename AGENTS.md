@@ -31,9 +31,9 @@ maintainer approves it with 2FA.
    git tag -a v2.0.2 -m 2.0.2
    git push origin main v2.0.2
    ```
-4. The `Release` workflow (environment `npm`) re-runs lint, tests and the Oxlint smoke test, runs
-   `npm stage publish`, then creates a **draft** GitHub Release with generated notes and the
-   package tarball attached.
+4. The `Release` workflow first runs the CI workflow (lint, tests, Oxlint smoke test) and only if it
+   passes does the publish job (environment `npm`) run `npm stage publish`, then creates a
+   **draft** GitHub Release with generated notes and the package tarball attached.
 5. Approve the staged package on npm (prompts for 2FA, run by a human):
    ```
    npm stage list

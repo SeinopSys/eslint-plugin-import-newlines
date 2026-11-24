@@ -14,7 +14,13 @@ permissions:
   contents: read
 
 jobs:
+  # The same lint, test and Oxlint jobs that run on pushes and pull requests
+  test:
+    name: Test
+    uses: ./.github/workflows/ci.yml
+
   publish:
+    needs: test
     name: Stage npm release
     runs-on: ubuntu-latest
     # Must match the environment name configured in the trusted publisher settings on npmjs.com.
@@ -46,9 +52,6 @@ jobs:
           fi
 
       - run: pnpm install --frozen-lockfile --ignore-scripts
-      - run: pnpm run lint
-      - run: pnpm test
-      - run: ./scripts/oxlint-smoke.sh
 
       # Trusted publishing needs npm 11.5.1 or newer
       - name: Check npm version
