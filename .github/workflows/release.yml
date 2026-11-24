@@ -1,6 +1,7 @@
 name: Release
 
-# Publishes to npm using trusted publishing (OIDC), so no npm token is stored in this repository.
+# Stages a release on npm using trusted publishing (OIDC), so no npm token is stored in this
+# repository. The staged version still has to be approved on npm (with 2FA) before it goes public.
 # Release by pushing a version tag that matches the version in package.json, e.g.:
 #   npm version patch   (or edit package.json and commit), then
 #   git push origin main v2.0.2
@@ -14,7 +15,7 @@ permissions:
 
 jobs:
   publish:
-    name: Publish to npm
+    name: Stage npm release
     runs-on: ubuntu-latest
     # Must match the environment name configured in the trusted publisher settings on npmjs.com.
     # Add required reviewers to this environment in the repository settings to gate releases.
@@ -55,5 +56,7 @@ jobs:
           npm --version
           node -e "const [a,b,c]=process.argv[1].split('.').map(Number);process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)" "$(npm --version)"
 
-      # Provenance is attached automatically when publishing via trusted publishing
-      - run: npm publish
+      # The trusted publisher only allows staging, so the package is not public until a maintainer
+      # approves it with 2FA: `npm stage list`, then `npm stage approve <stage-id>`.
+      # Provenance is attached automatically when publishing via trusted publishing.
+      - run: npm stage publish
