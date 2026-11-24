@@ -23,7 +23,7 @@ token). The trusted publisher only allows **`npm stage publish`**, so CI stages 
 maintainer approves it with 2FA.
 
 1. Make sure `main` is up to date and CI is green.
-2. Bump `version` in `package.json` (e.g. `pnpm version patch --no-git-tag-version`), commit it as
+2. Bump `version` in `package.json` (e.g. `npm version patch --no-git-tag-version`; `pnpm version` does something else), and update `pnpm-lock.yaml` if needed, commit it as
    just the version number (e.g. `2.0.2`) and push `main`.
 3. Create an annotated tag `v<version>` on that commit and push it. The tag must equal
    `v` + the `package.json` version, and the commit must be on `main`, or the workflow fails.
