@@ -1,0 +1,59 @@
+name: Release
+
+# Publishes to npm using trusted publishing (OIDC), so no npm token is stored in this repository.
+# Release by pushing a version tag that matches the version in package.json, e.g.:
+#   npm version patch   (or edit package.json and commit), then
+#   git push origin main v2.0.2
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    # Must match the environment name configured in the trusted publisher settings on npmjs.com.
+    # Add required reviewers to this environment in the repository settings to gate releases.
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write # required for npm trusted publishing and provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Check the tag matches package.json and is on main
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version v$version" >&2
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "Tag $GITHUB_REF_NAME is not on main" >&2
+            exit 1
+          fi
+
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm run lint
+      - run: pnpm test
+      - run: ./scripts/oxlint-smoke.sh
+
+      # Trusted publishing needs npm 11.5.1 or newer
+      - name: Check npm version
+        run: |
+          npm --version
+          node -e "const [a,b,c]=process.argv[1].split('.').map(Number);process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)" "$(npm --version)"
+
+      # Provenance is attached automatically when publishing via trusted publishing
+      - run: npm publish
