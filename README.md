@@ -22,6 +22,9 @@ $ npm install eslint-plugin-import-newlines --save-dev
 **Note:** If you installed ESLint globally (using the `-g` flag) then you must also
 install `eslint-plugin-import-newlines` globally.
 
+ESLint is an optional peer dependency, so if you only use [Oxlint](#using-with-oxlint) you can skip
+installing it.
+
 ## Usage
 
 Add `import-newlines` to the plugins section of your `.eslintrc` configuration file.
@@ -43,6 +46,40 @@ Then add the rule in the rules section.
   }
 }
 ```
+
+### Using with Oxlint
+
+The rule does not depend on ESLint at runtime, so the plugin also works with
+[Oxlint's JS plugins](https://oxc.rs/docs/guide/usage/linter/js-plugins) (currently in alpha).
+Install the plugin (ESLint is not required):
+
+```
+$ npm install eslint-plugin-import-newlines --save-dev
+```
+
+Then add it under `jsPlugins` in your `.oxlintrc.json` and enable the rule. The rule options are
+the same as with ESLint.
+
+```json
+{
+  "jsPlugins": [
+    "eslint-plugin-import-newlines"
+  ],
+  "rules": {
+    "import-newlines/enforce": [
+      "error",
+      {
+        "items": 2,
+        "max-len": 100,
+        "semi": false
+      }
+    ]
+  }
+}
+```
+
+If you use `oxlint.config.ts` instead, put the same `jsPlugins` and `rules` values in
+`defineConfig({ ... })`.
 
 ### Options
 
@@ -158,5 +195,5 @@ new lines to be lost.
 
 ### Testing
 
-Tests can be run via `npm run test`, make sure these pass after every change. Be sure to add tests
+Tests can be run via `pnpm test`, make sure these pass after every change. Be sure to add tests
 for new features.
