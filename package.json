@@ -57,6 +57,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "mocha": "^11.7.5",
+    "oxlint": "^1.93.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.0"
   },
@@ -76,5 +77,6 @@
   },
   "np": {
     "releaseDraft": false
-  }
+  },
+  "packageManager": "pnpm@12.9.1"
 }
